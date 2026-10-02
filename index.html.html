@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARTPOLIO</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header>
+    <a href="index.html" class="logo">ARTPOLIO</a>
+
+    <nav>
+      <a href="index.html" class="active-nav">Home</a>
+      <a href="create.html">Upload</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="#" onclick="openPublishPortfolio(); return false;">Publish</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Your Art,<br>Organized Beautifully.</h1>
+    <p>
+      ARTPOLIO는 창작자가 자신의 작품을 업로드하고,
+      시간순·유형별·스타일별로 정리하여<br> 직접 포트폴리오 웹사이트를 만들 수 있도록 돕는 서비스입니다.
+    </p>
+
+    <a href="create.html" class="main-btn">포트폴리오 만들기</a>
+  </section>
+
+
+
+  <section>
+  <h2 class="section-title">How It Works</h2>
+  <p class="section-desc">
+    업로드부터 갤러리 관리, 포트폴리오 공유까지 ARTPOLIO는 4단계로 진행됩니다.
+  </p>
+
+  <div class="workflow-grid">
+    <div class="workflow-card">
+      <h3>01 Upload</h3>
+      <p>
+        여러 작품 이미지를 한 번에 업로드하고 제목, 제작 시기, 유형, 스타일, 컬렉션을 입력합니다.
+      </p>
+    </div>
+
+    <div class="workflow-card">
+      <h3>02 Organize</h3>
+      <p>
+        작품을 컬렉션으로 분류하고 Artist’s Pick을 지정하여 대표작을 강조합니다.
+      </p>
+    </div>
+
+    <div class="workflow-card">
+      <h3>03 Gallery</h3>
+      <p>
+        필터와 정렬 기능으로 작품을 확인하고, 원하는 목적에 맞게 갤러리를 관리합니다.
+      </p>
+    </div>
+
+    <div class="workflow-card">
+      <h3>04 Publish</h3>
+      <p>
+        포트폴리오 링크를 생성하여 다른 사람에게 공유하고, 이후 추가한 작품도 반영할 수 있습니다.
+      </p>
+    </div>
+  </div>
+</section>
+
+    <footer>
+    © 2026 ARTPOLIO. Art + Portfolio.
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
+</body>
+</html>

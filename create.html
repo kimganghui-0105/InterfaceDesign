@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Upload Artwork | ARTPOLIO</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+  <header>
+    <a href="index.html" class="logo">ARTPOLIO</a>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="create.html" class="active-nav">Upload</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="#" onclick="openPublishPortfolio(); return false;">Publish</a>
+    </nav>
+  </header>
+
+  <section>
+    <h2 class="section-title">Upload Artwork</h2>
+    <p class="section-desc">
+      작품 이미지를 업로드하고 제목, 제작 시기, 유형, 스타일, 설명을 선택적으로 입력하세요.
+      저장된 작품은 My Gallery에 바로 반영됩니다.
+    </p>
+
+    <div class="upload-box">
+  <div class="drop-zone" id="dropZone" onclick="document.getElementById('multiImageInput').click()">
+    <p><strong>이미지를 드래그하거나 클릭해서 업로드하세요.</strong></p>
+<p>여러 장을 한 번에 선택할 수 있으며, Ctrl+V로 클립보드 이미지도 붙여넣을 수 있습니다.</p>
+  </div>
+
+  <input
+  type="file"
+  id="multiImageInput"
+  accept="image/*"
+  multiple
+  style="display: none;"
+  onchange="handleMultipleImages(event)"
+/>
+
+<div class="option-manager-open">
+  <button class="main-btn sub-btn" onclick="openOptionManager()">선택지 관리</button>
+</div>
+</div>
+  </section>
+
+  <section id="uploadListSection" style="display: none;">
+    <h2 class="section-title">Artwork List</h2>
+    <p class="section-desc">
+      업로드한 이미지별로 작품 정보를 입력한 뒤 전체 저장하기를 눌러주세요.
+    </p>
+
+    <div id="uploadList"></div>
+
+    <div class="button-row">
+      <button class="main-btn" onclick="saveAllArtworks()">전체 저장하기</button>
+      <a href="gallery.html" class="main-btn sub-btn">마이 갤러리 보기</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <strong>ARTPOLIO</strong>
+      <p>Created by 김강희</p>
+      <p>Email: kimganghui@ewha.ac.kr</p>
+      <p>© 2026 ARTPOLIO</p>
+    </div>
+  </footer>
+
+  <div id="optionManagerModal" class="option-manager-modal" onclick="closeOptionManagerByBackground(event)">
+  <div class="option-manager-content">
+    <button class="modal-close" onclick="closeOptionManager()">×</button>
+
+    <h2>선택지 관리</h2>
+    <p class="option-manager-desc">
+      작품 유형, 장르/원작명, 스타일 선택지를 관리할 수 있습니다.
+    </p>
+
+    <div class="option-manager-section">
+  <h3>작품 유형</h3>
+
+  <div class="option-add-row">
+    <input
+      type="text"
+      id="newTypeOptionInput"
+      placeholder="새 작품 유형 추가"
+      onkeydown="handleOptionManagerEnter(event,'type')"
+    >
+    <button onclick="addOptionFromManager('type')">+</button>
+  </div>
+
+  <div id="typeOptionList" class="option-chip-list"></div>
+</div>
+
+    <div class="option-manager-section">
+  <h3>장르 / 원작명</h3>
+
+  <div class="option-add-row">
+    <input
+      type="text"
+      id="newGenreOptionInput"
+      placeholder="새 장르 또는 원작명 추가"
+      onkeydown="handleOptionManagerEnter(event,'genre')"
+    >
+    <button onclick="addOptionFromManager('genre')">+</button>
+  </div>
+
+  <div id="genreOptionList" class="option-chip-list"></div>
+</div>
+
+    <div class="option-manager-section">
+  <h3>스타일</h3>
+
+  <div class="option-add-row">
+    <input
+      type="text"
+      id="newStyleOptionInput"
+      placeholder="새 스타일 추가"
+      onkeydown="handleOptionManagerEnter(event,'style')"
+    >
+    <button onclick="addOptionFromManager('style')">+</button>
+  </div>
+
+  <div id="styleOptionList" class="option-chip-list"></div>
+</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ARTPOLIO Portfolio</title>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body class="public-page" oncontextmenu="return false;">
+
+<header class="public-header">
+  <a href="publish.html" class="logo">ARTPOLIO</a>
+  <div class="public-header-text">Online Art Portfolio</div>
+</header>
+
+<section class="public-hero">
+  <p class="modal-label">Kim Ganghui Portfolio</p>
+  <h1 id="publicPortfolioTitle">ARTPOLIO</h1>
+  <p id="publicPortfolioDesc">
+    업로드된 작품을 모아 감상할 수 있는 공개 포트폴리오 페이지입니다.
+  </p>
+</section>
+
+<section class="public-filter-section">
+  <div class="gallery-toolbar public-toolbar">
+    <div class="filter-group">
+      <label>정렬</label>
+      <select id="sortFilter" onchange="handleSortFilterChange()">
+  <option value="date-newest">최신순</option>
+  <option value="date-oldest">오래된순</option>
+  <option value="date-range">특정 기간 선택</option>
+</select>
+    </div>
+
+    <div class="filter-group">
+      <label>작품 유형</label>
+      <select id="typeFilter" onchange="applyGalleryFilters()">
+        <option value="all">전체</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>스타일</label>
+      <select id="styleFilter" onchange="applyGalleryFilters()">
+        <option value="all">전체</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>장르</label>
+      <select id="genreFilter" onchange="applyGalleryFilters()">
+        <option value="all">전체</option>
+      </select>
+    </div>
+
+    <div class="filter-group date-range-filter" id="dateRangeFilterBox" style="display:none;">
+  <label>제작 기간</label>
+
+  <div class="date-range-row">
+    <input type="number" id="startYearFilter" placeholder="시작 연도" min="1900" max="2100" oninput="applyGalleryFilters()">
+
+    <select id="startMonthFilter" onchange="applyGalleryFilters()">
+      <option value="">시작 월</option>
+      <option value="1">1월</option>
+      <option value="2">2월</option>
+      <option value="3">3월</option>
+      <option value="4">4월</option>
+      <option value="5">5월</option>
+      <option value="6">6월</option>
+      <option value="7">7월</option>
+      <option value="8">8월</option>
+      <option value="9">9월</option>
+      <option value="10">10월</option>
+      <option value="11">11월</option>
+      <option value="12">12월</option>
+    </select>
+
+    <span>~</span>
+
+    <input type="number" id="endYearFilter" placeholder="끝 연도" min="1900" max="2100" oninput="applyGalleryFilters()">
+
+    <select id="endMonthFilter" onchange="applyGalleryFilters()">
+      <option value="">끝 월</option>
+      <option value="1">1월</option>
+      <option value="2">2월</option>
+      <option value="3">3월</option>
+      <option value="4">4월</option>
+      <option value="5">5월</option>
+      <option value="6">6월</option>
+      <option value="7">7월</option>
+      <option value="8">8월</option>
+      <option value="9">9월</option>
+      <option value="10">10월</option>
+      <option value="11">11월</option>
+      <option value="12">12월</option>
+    </select>
+  </div>
+</div>
+
+    <label class="pick-filter">
+      <input type="checkbox" id="pickOnlyFilter" onchange="applyGalleryFilters()">
+      Artist’s Pick만 보기
+    </label>
+  </div>
+
+  <div id="galleryStats" class="gallery-stats"></div>
+  <div id="galleryList" class="gallery public-gallery"></div>
+</section>
+
+<div id="artworkModal" class="modal" onclick="closeModalByBackground(event)">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeArtworkModal()">×</button>
+    <div id="modalImageArea" class="modal-image-area"></div>
+    <div id="modalInfoArea" class="modal-info-area"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <strong>ARTPOLIO</strong>
+    <p>Created by 김강희</p>
+    <p>Images are protected from right-click copying.</p>
+    <p>© 2026 ARTPOLIO</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Gallery | ARTPOLIO</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+  <header>
+    <a href="index.html" class="logo">ARTPOLIO</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="create.html">Upload</a>
+      <a href="gallery.html" class="active-nav">Gallery</a>
+      <a href="#" onclick="openPublishPortfolio(); return false;">Publish</a>
+    </nav>
+  </header>
+
+  <section>
+    <h2 class="section-title">My Gallery</h2>
+    <p class="section-desc">
+      업로드한 작품을 최신순, 유형별, 스타일별, 장르별, Artist’s Pick 기준으로 정리할 수 있습니다.
+    </p>
+    <div class="portfolio-setting-card">
+  <div class="portfolio-setting-head">
+    <div>
+      <h3>공개 포트폴리오 설정</h3>
+      <p>공개 페이지에 표시될 이름과 공유 링크를 설정할 수 있습니다.</p>
+    </div>
+    <button class="main-btn sub-btn" type="button" onclick="resetPortfolioSettings()">기본값</button>
+  </div>
+
+  <div class="portfolio-setting-grid">
+    <div class="form-group">
+      <label>포트폴리오 이름</label>
+      <input
+  type="text"
+  id="portfolioTitleInput"
+  placeholder="예: username Portfolio">
+    </div>
+
+    <div class="form-group">
+      <label>공유 링크 이름</label>
+      <input
+  type="text"
+  id="portfolioSlugInput"
+  placeholder="예: username">
+      <p class="help-text">영문, 숫자, 하이픈(-)만 사용하는 것을 추천합니다.</p>
+    </div>
+
+    <div class="form-group full-field">
+      <label>포트폴리오 설명</label>
+      <textarea
+  id="portfolioDescInput"
+  placeholder="포트폴리오 소개를 입력하세요.">
+</textarea>
+    </div>
+  </div>
+
+  <div class="share-link-box portfolio-link-box">
+    <input type="text" id="portfolioPreviewLink" readonly>
+    <button class="main-btn" type="button" onclick="savePortfolioSettings()">저장</button>
+    <button class="main-btn sub-btn" type="button" onclick="copyPortfolioLink()">링크 복사</button>
+    <button class="main-btn sub-btn" type="button" onclick="openPublishPortfolio()">공개 페이지 보기</button>
+  </div>
+</div>
+
+    <div class="gallery-toolbar">
+      <div class="filter-group">
+        <label>정렬</label>
+        <select id="sortFilter" onchange="handleSortFilterChange()">
+  <option value="date-newest">최신순</option>
+  <option value="date-oldest">오래된순</option>
+  <option value="date-range">특정 기간 선택</option>
+</select>
+      </div>
+
+      <div class="filter-group">
+        <label>작품 유형</label>
+        <select id="typeFilter" onchange="applyGalleryFilters()">
+          <option value="all">전체</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>스타일</label>
+        <select id="styleFilter" onchange="applyGalleryFilters()">
+          <option value="all">전체</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>장르</label>
+        <select id="genreFilter" onchange="applyGalleryFilters()">
+          <option value="all">전체</option>
+        </select>
+      </div>
+
+      <div class="filter-group date-range-filter" id="dateRangeFilterBox" style="display:none;">
+  <label>제작 기간</label>
+
+  <div class="date-range-row">
+    <input type="number" id="startYearFilter" placeholder="시작 연도" min="1900" max="2100" oninput="applyGalleryFilters()">
+
+    <select id="startMonthFilter" onchange="applyGalleryFilters()">
+      <option value="">시작 월</option>
+      <option value="1">1월</option>
+      <option value="2">2월</option>
+      <option value="3">3월</option>
+      <option value="4">4월</option>
+      <option value="5">5월</option>
+      <option value="6">6월</option>
+      <option value="7">7월</option>
+      <option value="8">8월</option>
+      <option value="9">9월</option>
+      <option value="10">10월</option>
+      <option value="11">11월</option>
+      <option value="12">12월</option>
+    </select>
+
+    <span>~</span>
+
+    <input type="number" id="endYearFilter" placeholder="끝 연도" min="1900" max="2100" oninput="applyGalleryFilters()">
+
+    <select id="endMonthFilter" onchange="applyGalleryFilters()">
+      <option value="">끝 월</option>
+      <option value="1">1월</option>
+      <option value="2">2월</option>
+      <option value="3">3월</option>
+      <option value="4">4월</option>
+      <option value="5">5월</option>
+      <option value="6">6월</option>
+      <option value="7">7월</option>
+      <option value="8">8월</option>
+      <option value="9">9월</option>
+      <option value="10">10월</option>
+      <option value="11">11월</option>
+      <option value="12">12월</option>
+    </select>
+  </div>
+</div>
+
+      <label class="pick-filter">
+        <input type="checkbox" id="pickOnlyFilter" onchange="applyGalleryFilters()">
+        Artist’s Pick만 보기
+      </label>
+    </div>
+
+    <div class="gallery-summary-row">
+      <div id="galleryStats" class="gallery-stats"></div>
+
+      <div class="gallery-actions">
+        <a href="create.html" class="main-btn">작품 추가하기</a>
+        <button class="main-btn sub-btn" onclick="openPublishPortfolio()">
+  공개 페이지 보기
+</button>
+        <button class="main-btn sub-btn" id="bulkModeBtn" onclick="toggleBulkMode()">일괄 선택</button>
+        <button class="main-btn danger-btn" id="bulkDeleteBtn" onclick="deleteSelectedArtworks()" style="display:none;">선택 삭제</button>
+        <button class="main-btn danger-btn" onclick="clearGallery()">전체 삭제</button>
+      </div>
+    </div>
+
+    <div id="galleryList" class="gallery"></div>
+  </section>
+
+  <div id="artworkModal" class="modal" onclick="closeModalByBackground(event)">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeArtworkModal()">×</button>
+      <div id="modalImageArea" class="modal-image-area"></div>
+      <div id="modalInfoArea" class="modal-info-area"></div>
+    </div>
+  </div>
+
+  <div id="editArtworkModal" class="modal" onclick="closeEditModalByBackground(event)">
+    <div class="modal-content edit-modal-content">
+      <button class="modal-close" onclick="closeEditArtworkModal()">×</button>
+
+      <div class="modal-image-area edit-preview-area">
+        <img id="editPreviewImage" src="" alt="수정 미리보기">
+      </div>
+
+      <div class="modal-info-area">
+        <p class="modal-label">Edit Artwork</p>
+        <h2>작품 정보 수정</h2>
+
+        <input type="hidden" id="editArtworkId">
+
+        <div class="form-group">
+          <label>대표 이미지 교체</label>
+          <input type="file" id="editImageInput" accept="image/*" onchange="previewEditImage(event)">
+          <p class="help-text">다시 그린 이미지가 있다면 여기에서 교체할 수 있습니다.</p>
+        </div>
+
+        <div class="form-group">
+          <label>작품명</label>
+          <input type="text" id="editTitleInput">
+        </div>
+
+        <div class="form-group">
+          <label>제작 시기</label>
+          <input type="text" id="editDateInput" placeholder="예: 2026-06-18 또는 2026년 2분기">
+        </div>
+
+        <div class="form-group">
+          <label>작품 유형</label>
+          <input type="text" id="editTypeInput" placeholder="예: 일러스트, 캐릭터 디자인">
+        </div>
+
+        <div class="form-group">
+          <label>장르</label>
+          <input type="text" id="editGenreInput" placeholder="새 장르 또는 원작명을 입력하세요">
+        </div>
+
+        <div class="form-group">
+          <label>스타일</label>
+          <input type="text" id="editStyleInput" placeholder="예: 셀채색, 흑백">
+        </div>
+
+        <div class="form-group">
+          <label>작품 설명</label>
+          <textarea id="editDescInput"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>외부 링크</label>
+          <input type="url" id="editLinkInput" placeholder="https://...">
+        </div>
+
+        <div class="form-group">
+  <label>상세 설명용 이미지/동영상</label>
+  <input type="file" id="editMediaInput" accept="image/*,video/*" onchange="previewEditMedia(event)">
+  <p class="help-text">타임랩스 영상이나 과정 이미지를 추가할 수 있습니다.</p>
+
+  <div class="media-remove-row">
+    <button type="button" class="main-btn danger-btn" onclick="removeEditMedia()">
+      상세 미디어 제거
+    </button>
+  </div>
+
+  <div id="editMediaPreview" class="upload-media-preview"></div>
+</div>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="editPickInput">
+          <label for="editPickInput">Artist’s Pick으로 설정하기</label>
+        </div>
+
+        <div class="button-row">
+          <button class="main-btn" onclick="saveArtworkEdits()">수정 저장</button>
+          <button class="main-btn sub-btn" onclick="closeEditArtworkModal()">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <strong>ARTPOLIO</strong>
+      <p>Created by 김강희</p>
+      <p>Email: kimganghui@ewha.ac.kr</p>
+      <p>© 2026 ARTPOLIO</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
